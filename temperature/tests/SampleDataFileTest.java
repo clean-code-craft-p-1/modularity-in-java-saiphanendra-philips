@@ -18,26 +18,18 @@ public class SampleDataFileTest {
         try {
             Path path = Path.of(fileName);
             List<String> lines = Files.readAllLines(path);
-            assertFalse(lines.isEmpty(), "Expected sample file to contain readings");
+            if (lines.isEmpty()) {
+                throw new AssertionError("Expected sample file to contain readings");
+            }
 
             boolean firstLineValid = new TemperatureLineParser()
                     .parseReadingLine(1, lines.get(0))
                     .isValid();
-            assertTrue(firstLineValid, "Expected first line to be parseable");
+            if (!firstLineValid) {
+                throw new AssertionError("Expected first line to be parseable");
+            }
         } finally {
             Files.deleteIfExists(Path.of(fileName));
-        }
-    }
-
-    private void assertTrue(boolean condition, String message) {
-        if (!condition) {
-            throw new AssertionError(message);
-        }
-    }
-
-    private void assertFalse(boolean condition, String message) {
-        if (condition) {
-            throw new AssertionError(message);
         }
     }
 }
