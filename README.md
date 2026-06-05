@@ -2,32 +2,49 @@
 
 Welcome to the art of breaking things apart! 🧩
 
-## Your Mission
+## What was implemented
 
-You have inherited a temperature data processor that does everything in one big file. While it works now, your team will grow and everyone needs to modify different parts of the same file. That's something you need to avoid.
+The `temperature` feature is now split into small, purpose-based modules so teams can work independently:
 
-Your job: **Transform this into a well-organized, modular codebase** where developers can work independently without stepping on each other's toes.
+- `temperature.application` - orchestration use case (`TemperatureProcessingService`)
+- `temperature.domain` - core data models (`TemperatureReading`, `TemperatureSummary`, `ProcessingResult`)
+- `temperature.parsing` - input validation and parsing (`TemperatureLineParser`)
+- `temperature.analysis` - pure analytics logic (`TemperatureAnalyzer`)
+- `temperature.io` - file I/O abstractions and implementations (`ReadingSource`, `ReportSink`)
+- `temperature.reporting` - formatting and console presentation
+- `temperature.tests` - focused tests with boundary-oriented assertions
 
-The CI pipeline will guide you with automatic checks, so let the red/green feedback be your friend!
+## Assignment principles covered
 
-## Modularity motivation
+- **Small and well-named**: each class has a single, explicit responsibility.
+- **Separate by lifecycle**: parsing, analytics, orchestration, and side-effecting I/O are separated.
+- **Name by purpose**: package and class names describe intent instead of technical details.
+- **Avoid side effects**: core service logic returns results; I/O is handled at the edges.
+- **Inject dependencies**: `TemperatureProcessingService` receives source/parser/analyzer via constructor injection.
+- **FIRST testing mindset**:
+  - Fast and repeatable (pure unit-style tests)
+  - Independent (tests do not depend on each other)
+  - Self-validating (explicit assertions)
+  - Timely and focused on the **boundary under test**
 
-As you refactor, keep in mind that successful software evolves. Your customers will keep asking for new ways to analyze temperature data. Here are some examples of what might be coming:
+## Run locally
 
-### 🚨 Feature 1: Fever Detection & Alerting
+Compile all classes:
 
-"As a caregiver, I want to be alerted if a patient's body temperature sustains high for more than 30 minutes, so that I can intervene quickly."
+```powershell
+Set-Location "C:\Users\320287761\kt_java\repo\modularity-in-java-saiphanendra-philips"
+Get-ChildItem -Recurse -Filter *.java | ForEach-Object { $_.FullName } | Set-Content .java_sources.txt
+javac "@.java_sources.txt"
+```
 
-This feature will need frequent updates as medical protocols change.
+Run the application:
 
-### 📊 Feature 2: Circadian Pattern Summary
+```powershell
+java temperature.Main
+```
 
-"As a caregiver, I want to review 24-hour patterns to check for abnormal rhythms (e.g., fever at night but not daytime)."
+Run tests:
 
-This will grow with new analytics and trend insights.
-
-## The goal
-
-Can you structure your code so that future developers can work on these new features independently, end-to-end, without conflicts?
-
-Happy refactoring! 🎯
+```powershell
+java temperature.tests.TestRunner
+```
