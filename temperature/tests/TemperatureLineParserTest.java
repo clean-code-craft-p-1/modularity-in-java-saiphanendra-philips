@@ -21,16 +21,22 @@ public class TemperatureLineParserTest {
 
     private void rejectsMalformedTimestamp() {
         LineParseResult result = parser.parseReadingLine(2, "09:15,23.5");
-        assertTrue(!result.isValid(), "Expected malformed timestamp to be rejected");
+        assertFalse(result.isValid(), "Expected malformed timestamp to be rejected");
     }
 
     private void rejectsOutOfRangeTemperature() {
         LineParseResult result = parser.parseReadingLine(3, "09:15:30,300.0");
-        assertTrue(!result.isValid(), "Expected out-of-range temperature to be rejected");
+        assertFalse(result.isValid(), "Expected out-of-range temperature to be rejected");
     }
 
     private void assertTrue(boolean condition, String message) {
         if (!condition) {
+            throw new AssertionError(message);
+        }
+    }
+
+    private void assertFalse(boolean condition, String message) {
+        if (condition) {
             throw new AssertionError(message);
         }
     }

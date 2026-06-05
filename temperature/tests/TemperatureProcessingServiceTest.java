@@ -33,18 +33,12 @@ public class TemperatureProcessingServiceTest {
         assertEquals(4, result.getTotalReadings(), "Expected total boundary size");
         assertEquals(2, result.getValidReadings(), "Expected valid reading count");
         assertEquals(2, result.getInvalidReadingCount(), "Expected invalid reading count");
-        assertTrue(result.getInvalidLines().size() == 2, "Expected invalid lines list size");
+        assertEquals(2, result.getInvalidLines().size(), "Expected invalid lines list size");
     }
 
     private void assertEquals(int expected, int actual, String message) {
         if (expected != actual) {
             throw new AssertionError(message + ": expected " + expected + " but got " + actual);
-        }
-    }
-
-    private void assertTrue(boolean condition, String message) {
-        if (!condition) {
-            throw new AssertionError(message);
         }
     }
 }

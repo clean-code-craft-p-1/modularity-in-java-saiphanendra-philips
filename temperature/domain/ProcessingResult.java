@@ -7,20 +7,20 @@ import java.util.List;
 public class ProcessingResult {
     private final int totalReadings;
     private final int validReadings;
-    private final int errorCount;
+    private final int invalidReadingCount;
     private final List<String> invalidLines;
     private final TemperatureSummary summary;
 
     public ProcessingResult(
             int totalReadings,
             int validReadings,
-            int errorCount,
+            int invalidReadingCount,
             List<String> invalidLines,
             TemperatureSummary summary
     ) {
         this.totalReadings = totalReadings;
         this.validReadings = validReadings;
-        this.errorCount = errorCount;
+        this.invalidReadingCount = invalidReadingCount;
         this.invalidLines = Collections.unmodifiableList(new ArrayList<>(invalidLines));
         this.summary = summary;
     }
@@ -34,7 +34,7 @@ public class ProcessingResult {
     }
 
     public int getInvalidReadingCount() {
-        return errorCount;
+        return invalidReadingCount;
     }
 
     public List<String> getInvalidLines() {

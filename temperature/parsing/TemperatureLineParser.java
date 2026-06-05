@@ -4,15 +4,18 @@ import temperature.domain.TemperatureReading;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 public class TemperatureLineParser {
+    private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
+
     public LineParseResult parseReadingLine(int lineNumber, String rawLine) {
         String line = rawLine.trim();
         if (line.isEmpty()) {
             return LineParseResult.invalid(formatError(lineNumber, rawLine));
         }
 
-        String[] parts = line.split(",");
+        String[] parts = line.split(",", 2);
         if (parts.length != 2) {
             return LineParseResult.invalid(formatError(lineNumber, rawLine));
         }
@@ -20,7 +23,7 @@ public class TemperatureLineParser {
         String timestampText = parts[0].trim();
         String temperatureText = parts[1].trim();
 
-        if (!timestampText.matches("\\d{2}:\\d{2}:\\d{2}")) {
+        if (!TIMESTAMP_PATTERN.matcher(timestampText).matches()) {
             return LineParseResult.invalid(formatError(lineNumber, rawLine));
         }
 
