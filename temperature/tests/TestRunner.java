@@ -10,6 +10,7 @@ public class TestRunner {
         new TemperatureLineParserTest().run();
         new TemperatureAnalyzerTest().run();
         new TemperatureProcessingServiceTest().run();
+        new SampleDataFileTest().run();
         System.out.println("All tests passed");
     }
 }
